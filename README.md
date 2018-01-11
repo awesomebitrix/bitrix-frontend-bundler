@@ -6,19 +6,19 @@
 
 Что из чего мы всё-таки собираем?
 
-**Основной JS.** Это любые JS-файлы в папке /local/source/js/.
+**Основной JS.** Это любые JS-файлы в папке _/local/source/js/_.
 Можно смело применять всю мощь ES6: модуль
-Babel затранспайлит код в ES5. Билд: /local/build/main.js
+Babel затранспайлит код в ES5. Билд: _/local/build/main.js_
 
-**Основные стили.** Любые SCSS файлы в папке /local/source/scss/.
-Компилируется в обычный CSS. Билд: /local/build/main.css
+**Основные стили.** Любые SCSS файлы в папке _/local/source/scss/_.
+Компилируется в обычный CSS. Билд: _/local/build/main.css_
 
 
-**Вспомогательный JS.** Любые JS-файлы по адресу /local/source/vendor/js/.
-Билд: /local/build/vendor.js
+**Вспомогательный JS.** Любые JS-файлы по адресу _/local/source/vendor/js/_.
+Билд: _/local/build/vendor.js_
 
-**Вспомогательный CSS.** Любые CSS-файлы по адресу /local/source/vendor/css/.
-Билд: /local/build/vendor.css
+**Вспомогательный CSS.** Любые CSS-файлы по адресу _/local/source/vendor/css/_.
+Билд: _/local/build/vendor.css_
 
 По-умолчанию билд будет минифицирован. Но это можно отменить, если задать переменную среды DEV_SERVER=1
 
@@ -38,7 +38,7 @@ $ gulp build
 $ gulp watch
 ```
 
-Собрать все билды, запустить прослушивание файлов и перезапускать Gulp при изменениях gulpfile.js:
+Собрать все билды, запустить прослушивание файлов и перезапускать Gulp при изменениях _gulpfile.js_:
 
 ```bash
 $ gulp serve
