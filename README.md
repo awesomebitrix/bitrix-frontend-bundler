@@ -2,6 +2,18 @@
 
 Моя реализация сборщика CSS/JS компонентов в рамках проектов на 1С-Битрикс.
 
+### Установка
+
+Будем устанавливать пакетный менеджер Yarn и таск-менеджер Gulp.
+Данный способ применим для систем CentOS:
+
+```bash
+$ wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
+$ curl --silent --location https://rpm.nodesource.com/setup_6.x | bash - && yum install -y yarn
+$ yarn global add gulp
+
+```
+
 ### Введение
 
 Что из чего мы всё-таки собираем?

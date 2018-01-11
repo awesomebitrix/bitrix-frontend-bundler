@@ -1,0 +1,14 @@
+# Netbeans
+nbproject/
+
+# PHPStorm
+.idea/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
