@@ -18,18 +18,26 @@ $ yarn global add gulp
 
 Что из чего мы всё-таки собираем?
 
-**Основной JS.** Это любые JS-файлы в папке _/local/source/js/_.
+**Основной JS:** _/local/source/js/_ 
+
+Это любые JS-файлы в указанной папке.
 Можно смело применять всю мощь ES6: модуль
 Babel затранспайлит код в ES5. Билд: _/local/build/main.js_
 
-**Основные стили.** Любые SCSS файлы в папке _/local/source/scss/_.
+**Основные стили:** _/local/source/scss/_
+
+Любые SCSS файлы в указанной папке.
 Компилируется в обычный CSS. Билд: _/local/build/main.css_
 
 
-**Вспомогательный JS.** Любые JS-файлы по адресу _/local/source/vendor/js/_.
+**Вспомогательный JS:** _/local/source/vendor/js/_
+
+Любые JS-файлы в указанной папке.
 Билд: _/local/build/vendor.js_
 
-**Вспомогательный CSS.** Любые CSS-файлы по адресу _/local/source/vendor/css/_.
+**Вспомогательный CSS:** _/local/source/vendor/css/_
+
+Любые CSS-файлы в указанной папке.
 Билд: _/local/build/vendor.css_
 
 По-умолчанию билд будет минифицирован. Но это можно отменить, если задать переменную среды DEV_SERVER=1
@@ -41,9 +49,9 @@ $ DEV_SERVER=1
 ### Управление
 
 Если ваша система готова к работе с Yarn и Gulp, тогда кладём следующие файлы в корень сайта:
-* gulpfile.js
-* package.json
-* .babelrc
+* _gulpfile.js_
+* _package.json_
+* _.babelrc_
 
 После этого делаем:
 ```bash
