@@ -22,6 +22,11 @@ const minifyParams = {
 let devServerMode = process.env.DEV_SERVER === '1';
 let minifyMode = !devServerMode;
 
+function onStreamError(error) {
+	console.error(error.messageOriginal);
+	this.emit('end');
+}
+
 const path = {
 	build: 'local/build/',
 	source: 'local/source/',
@@ -75,7 +80,8 @@ gulp.task('css-vendor', () => {
 gulp.task('js', () => {
 
 	let stream = gulp.src(sources.js)
-		.pipe(babel());
+		.pipe(babel())
+		.on('error', onStreamError);
 
 	if(minifyMode) {
 		stream = stream.pipe(minify(minifyParams))
@@ -88,7 +94,10 @@ gulp.task('js', () => {
 gulp.task('css', () => {
 
 	let stream = gulp.src(sources.scss)
-		.pipe(sass());
+		.pipe(sass({
+			errLogToConsole: true
+		}))
+		.on('error', onStreamError);
 
 	if(minifyMode) {
 		stream = stream.pipe(minify(minifyParams))
