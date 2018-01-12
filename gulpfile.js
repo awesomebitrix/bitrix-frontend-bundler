@@ -6,6 +6,7 @@ const concat = require('gulp-concat');
 const babel = require('gulp-babel');
 const spawn = require('child_process').spawn;
 const minify = require('gulp-minifier');
+const sourceMaps = require('gulp-sourcemaps');
 
 const minifyParams = {
 	minify: true,
@@ -30,6 +31,7 @@ function onStreamError(error) {
 const path = {
 	build: 'local/build/',
 	source: 'local/source/',
+	maps: './'
 };
 
 const sources = {
@@ -55,31 +57,36 @@ const sources = {
 
 gulp.task('js-vendor', () => {
 
-	let stream = gulp.src(sources.vendor.js);
+	let stream = gulp.src(sources.vendor.js)
+		.pipe(sourceMaps.init());
 
 	if(minifyMode) {
 		stream = stream.pipe(minify(minifyParams))
 	}
 
 	return stream.pipe(concat('vendor.js'))
+		.pipe(sourceMaps.write(path.maps))
 		.pipe(gulp.dest(path.build));
 });
 
 gulp.task('css-vendor', () => {
 
-	let stream = gulp.src(sources.vendor.css);
+	let stream = gulp.src(sources.vendor.css)
+		.pipe(sourceMaps.init());
 
 	if(minifyMode) {
 		stream = stream.pipe(minify(minifyParams))
 	}
 
 	return stream.pipe(concat('vendor.css'))
+		.pipe(sourceMaps.write(path.maps))
 		.pipe(gulp.dest(path.build));
 });
 
 gulp.task('js', () => {
 
 	let stream = gulp.src(sources.js)
+		.pipe(sourceMaps.init())
 		.pipe(babel())
 		.on('error', onStreamError);
 
@@ -88,12 +95,14 @@ gulp.task('js', () => {
 	}
 
 	return stream.pipe(concat('main.js'))
+		.pipe(sourceMaps.write(path.maps))
 		.pipe(gulp.dest(path.build));
 });
 
 gulp.task('css', () => {
 
 	let stream = gulp.src(sources.scss)
+		.pipe(sourceMaps.init())
 		.pipe(sass({
 			errLogToConsole: true
 		}))
@@ -103,8 +112,9 @@ gulp.task('css', () => {
 		stream = stream.pipe(minify(minifyParams))
 	}
 
-	return stream.pipe(concat('main.css')).
-		pipe(gulp.dest(path.build));
+	return stream.pipe(concat('main.css'))
+		.pipe(sourceMaps.write(path.maps))
+		.pipe(gulp.dest(path.build));
 });
 
 gulp.task('watch', () => {
