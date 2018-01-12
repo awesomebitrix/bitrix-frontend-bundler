@@ -23,16 +23,15 @@ let devServerMode = process.env.DEV_SERVER === '1';
 let minifyMode = !devServerMode;
 
 const path = {
-	appRoot: './',
-	build: './local/build/',
-	source: './local/source/',
+	build: 'local/build/',
+	source: 'local/source/',
 };
 
 const sources = {
 	vendor: {
 		js: [
 			// todo: make nicer include of that polyfill
-			path.appRoot + 'node_modules/babel-polyfill/dist/polyfill.min.js',
+			'node_modules/babel-polyfill/dist/polyfill.min.js',
 			path.source + 'vendor/js/**/*.js'
 		],
 		css: [
