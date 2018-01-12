@@ -8,10 +8,9 @@
 Данный способ применим для систем CentOS:
 
 ```bash
-$ wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
-$ curl --silent --location https://rpm.nodesource.com/setup_6.x | bash - && yum install -y yarn
-$ yarn global add gulp
-
+# wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
+# curl --silent --location https://rpm.nodesource.com/setup_6.x | bash - && yum install -y yarn
+# yarn global add gulp
 ```
 
 ### Введение
@@ -54,14 +53,13 @@ $ DEV_SERVER=1
 * _package.json_
 * _.babelrc_
 
-После этого делаем:
+После этого, находясь в корне сайта, делаем:
 ```bash
 $ yarn install
 ```
 
 Собрать весь фронтэнд можно следующим образом:
 ```bash
-$ cd ~/www/some.bitrix-project.com/
 $ yarn build
 ```
 
