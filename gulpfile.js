@@ -62,7 +62,7 @@ function onStreamError(error) {
 	this.emit('end');
 }
 
-function initStream(stream) {
+function prepareStream(stream) {
 
 	if(sourceMapsMode) {
 		stream = stream.pipe(sourceMaps.init());
@@ -72,8 +72,6 @@ function initStream(stream) {
 }
 
 function finishStream(stream) {
-
-	stream.on('error', onStreamError);
 
 	if(sourceMapsMode) {
 		stream = stream.pipe(sourceMaps.write(path.maps));
@@ -92,8 +90,9 @@ gulp.task('js-main', () => {
 
 	let stream = gulp.src(sources.js);
 
-	stream = initStream(stream)
+	stream = prepareStream(stream)
 		.pipe(babel())
+		.on('error', onStreamError)
 		.pipe(concat('main.js'));
 
 	return finishStream(stream);
@@ -105,10 +104,11 @@ gulp.task('css-main', () => {
 
 	let stream = gulp.src(sources.scss);
 	
-	stream = initStream(stream)
+	stream = prepareStream(stream)
 		.pipe(sass({
 			errLogToConsole: true
 		}))
+		.on('error', onStreamError)
 		.pipe(concat('main.css'));
 
 	return finishStream(stream);
@@ -120,7 +120,7 @@ gulp.task('js-vendor', () => {
 
 	let stream = gulp.src(sources.vendor.js);
 
-	stream = initStream(stream)
+	stream = prepareStream(stream)
 		.pipe(concat('vendor.js'));
 
 	return finishStream(stream);
@@ -132,24 +132,11 @@ gulp.task('css-vendor', () => {
 
 	let stream = gulp.src(sources.vendor.css);
 
-	stream = initStream(stream)
+	stream = prepareStream(stream)
 		.pipe(concat('vendor.css'));
 
 	return finishStream(stream);
 });
-
-/* ---------------- WATCHER -------------------- */
-
-gulp.task('watch', () => {
-	gulp.watch(sources.vendor.js, ['js-vendor']);
-	gulp.watch(sources.vendor.css, ['css-vendor']);
-	gulp.watch(sources.js, ['js-main']);
-	gulp.watch(sources.scss, ['css-main']);
-});
-
-/* ---------------- BUILD -------------------- */
-
-gulp.task('build', ['js-main', 'css-main', 'js-vendor', 'css-vendor']);
 
 /* ---------------- BUILD + WATCHER with reloading -------------------- */
 
@@ -170,3 +157,16 @@ gulp.task('serve', () => {
 
 	startGulp();
 });
+
+/* ---------------- WATCHER -------------------- */
+
+gulp.task('watch', () => {
+	gulp.watch(sources.vendor.js, ['js-vendor']);
+	gulp.watch(sources.vendor.css, ['css-vendor']);
+	gulp.watch(sources.js, ['js-main']);
+	gulp.watch(sources.scss, ['css-main']);
+});
+
+/* ---------------- BUILD -------------------- */
+
+gulp.task('build', ['js-main', 'css-main', 'js-vendor', 'css-vendor']);
