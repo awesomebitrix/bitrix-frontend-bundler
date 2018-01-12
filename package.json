@@ -1,6 +1,6 @@
 {
   "name": "bitrix-frontend-bundler",
-  "version": "0.1.0",
+  "version": "0.95.0",
   "description": "Universal bundler to build CSS/JS for Bitrix project",
   "main": "gulpfile.js",
   "scripts": {
