@@ -13,6 +13,8 @@
 
 Билд: _/local/build/main.js_
 
+
+
 **Основные стили:** _/local/source/scss/_
 
 Любые SCSS файлы в указанной папке.
@@ -22,17 +24,22 @@
 Билд: _/local/build/main.css_
 
 
+
 **Вспомогательный JS:** _/local/source/vendor/js/_
 
 Любые JS-файлы в указанной папке.
 
 Билд: _/local/build/vendor.js_
 
+
+
 **Вспомогательный CSS:** _/local/source/vendor/css/_
 
 Любые CSS-файлы в указанной папке.
 
 Билд: _/local/build/vendor.css_
+
+
 
 
 ## Установка
