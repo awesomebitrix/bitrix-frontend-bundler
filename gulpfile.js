@@ -8,6 +8,8 @@ const spawn = require('child_process').spawn;
 const minify = require('gulp-minifier');
 const sourceMaps = require('gulp-sourcemaps');
 
+/* ---------------- PARAMS -------------------- */
+
 const minifyParams = {
 	minify: true,
 	collapseWhitespace: true,
@@ -20,13 +22,11 @@ const minifyParams = {
 	}
 };
 
-let devServerMode = process.env.DEV_SERVER === '1';
-let minifyMode = !devServerMode;
+const devServerMode = process.env.DEV_SERVER == '1';
+const minifyMode = !devServerMode;
+const sourceMapsMode = devServerMode;
 
-function onStreamError(error) {
-	console.error(error.messageOriginal);
-	this.emit('end');
-}
+/* ---------------- PATHS -------------------- */
 
 const path = {
 	build: 'local/build/',
@@ -55,74 +55,103 @@ const sources = {
 	],
 };
 
-gulp.task('js-vendor', () => {
+/* ---------------- FUNCTIONS -------------------- */
 
-	let stream = gulp.src(sources.vendor.js)
-		.pipe(sourceMaps.init());
+function onStreamError(error) {
+	console.error(error.messageOriginal);
+	this.emit('end');
+}
+
+function initStream(stream) {
+
+	if(sourceMapsMode) {
+		stream = stream.pipe(sourceMaps.init());
+	}
+
+	return stream;
+}
+
+function finishStream(stream) {
+
+	stream.on('error', onStreamError);
+
+	if(sourceMapsMode) {
+		stream = stream.pipe(sourceMaps.write(path.maps));
+	}
 
 	if(minifyMode) {
 		stream = stream.pipe(minify(minifyParams))
 	}
 
-	return stream.pipe(concat('vendor.js'))
-		.pipe(sourceMaps.write(path.maps))
-		.pipe(gulp.dest(path.build));
-});
+	return stream.pipe(gulp.dest(path.build));
+}
 
-gulp.task('css-vendor', () => {
+/* ---------------- MAIN JS -------------------- */
 
-	let stream = gulp.src(sources.vendor.css)
-		.pipe(sourceMaps.init());
+gulp.task('js-main', () => {
 
-	if(minifyMode) {
-		stream = stream.pipe(minify(minifyParams))
-	}
+	let stream = gulp.src(sources.js);
 
-	return stream.pipe(concat('vendor.css'))
-		.pipe(sourceMaps.write(path.maps))
-		.pipe(gulp.dest(path.build));
-});
-
-gulp.task('js', () => {
-
-	let stream = gulp.src(sources.js)
-		.pipe(sourceMaps.init())
+	stream = initStream(stream)
 		.pipe(babel())
-		.on('error', onStreamError);
+		.pipe(concat('main.js'));
 
-	if(minifyMode) {
-		stream = stream.pipe(minify(minifyParams))
-	}
-
-	return stream.pipe(concat('main.js'))
-		.pipe(sourceMaps.write(path.maps))
-		.pipe(gulp.dest(path.build));
+	return finishStream(stream);
 });
 
-gulp.task('css', () => {
+/* ---------------- MAIN CSS -------------------- */
 
-	let stream = gulp.src(sources.scss)
-		.pipe(sourceMaps.init())
+gulp.task('css-main', () => {
+
+	let stream = gulp.src(sources.scss);
+	
+	stream = initStream(stream)
 		.pipe(sass({
 			errLogToConsole: true
 		}))
-		.on('error', onStreamError);
+		.pipe(concat('main.css'));
 
-	if(minifyMode) {
-		stream = stream.pipe(minify(minifyParams))
-	}
-
-	return stream.pipe(concat('main.css'))
-		.pipe(sourceMaps.write(path.maps))
-		.pipe(gulp.dest(path.build));
+	return finishStream(stream);
 });
+
+/* ---------------- VENDOR JS -------------------- */
+
+gulp.task('js-vendor', () => {
+
+	let stream = gulp.src(sources.vendor.js);
+
+	stream = initStream(stream)
+		.pipe(concat('vendor.js'));
+
+	return finishStream(stream);
+});
+
+/* ---------------- VENDOR CSS -------------------- */
+
+gulp.task('css-vendor', () => {
+
+	let stream = gulp.src(sources.vendor.css);
+
+	stream = initStream(stream)
+		.pipe(concat('vendor.css'));
+
+	return finishStream(stream);
+});
+
+/* ---------------- WATCHER -------------------- */
 
 gulp.task('watch', () => {
 	gulp.watch(sources.vendor.js, ['js-vendor']);
 	gulp.watch(sources.vendor.css, ['css-vendor']);
-	gulp.watch(sources.js, ['js']);
-	gulp.watch(sources.scss, ['css']);
+	gulp.watch(sources.js, ['js-main']);
+	gulp.watch(sources.scss, ['css-main']);
 });
+
+/* ---------------- BUILD -------------------- */
+
+gulp.task('build', ['js-main', 'css-main', 'js-vendor', 'css-vendor']);
+
+/* ---------------- BUILD + WATCHER with reloading -------------------- */
 
 gulp.task('serve', () => {
 	let process;
@@ -141,5 +170,3 @@ gulp.task('serve', () => {
 
 	startGulp();
 });
-
-gulp.task('build', ['js-vendor', 'css-vendor', 'js', 'css']);
