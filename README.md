@@ -74,7 +74,7 @@ $ yarn watch
 $ yarn serve
 ```
 
-После этого в шаблоне сайта мы подключаем всего лишь 4 файла:
+Если сборка работает успешно, то в шаблоне сайта нам достаточно подключить 4 файла:
 ```php
 $assetManager = \Bitrix\Main\Page\Asset::getInstance();
 $assetManager->addCss('/local/build/vendor.css');
