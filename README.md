@@ -8,20 +8,19 @@
 
 **Основной JS:** _/local/source/js/**/*.js_ 
 
-Это любые JS-файлы в указанной папке.
-Здесь можно смело использовать все прелести стандарта ES6, потому что всё это скомпилируется в ES5.
+Это любые JS-файлы в указанной папке. На выходе получите 2 файла: собранный оригинал и его ES5-версия. Так что можно смело использовать все прелести ES6, не парясь о работе кода в каком-нибудь IE10.
 
-Билд: _/local/build/main.js_
+Подключайте файлы динамически через JS: сначала определите поддерживается ли ES6, потом подключайте соответствующий билд-файл.
 
-
+Результат: _/local/build/main.latest.js_ и _/local/build/main.es5.js_
 
 **Основные стили:** _/local/source/scss/**/*.scss_
 
-Любые SCSS файлы в указанной папке.
+Любые SCSS-файлы в указанной папке, кроме файлов импорта (__*.scss_).
 
 Компилируется в обычный CSS. 
 
-Билд: _/local/build/main.css_
+Результат: _/local/build/main.css_
 
 
 
@@ -29,7 +28,7 @@
 
 Любые JS-файлы в указанной папке.
 
-Билд: _/local/build/vendor.js_
+Результат: _/local/build/vendor.js_
 
 
 
@@ -37,15 +36,15 @@
 
 Любые CSS-файлы в указанной папке.
 
-Билд: _/local/build/vendor.css_
+Результат: _/local/build/vendor.css_
 
 
 
 
 ## Установка
 
-Менеджером NPM-пакетов выступит Yarn, а собирать всё будет силами Gulp.js.
-Следующий способ установки применим для систем CentOS:
+Менеджером npm-пакетов выступит Yarn, а собирать всё будет силами Gulp.js.
+Пример установки под CentOS:
 
 ```bash
 $ wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
@@ -77,14 +76,29 @@ $ yarn build
 $ yarn serve
 ```
 
-Если сборка работает успешно, то в шаблоне сайта нам достаточно подключить 4 файла:
+Если сборка работает успешно, то на бэкэнде нам достаточно подключить 2 файла:
 ```php
 $assetManager = \Bitrix\Main\Page\Asset::getInstance();
 $assetManager->addCss('/local/build/vendor.css');
-$assetManager->addJs('/local/build/vendor.js');
 $assetManager->addCss('/local/build/main.css', true);
-$assetManager->addJs('/local/build/main.js', true);
 ```
+
+Основой JS советую подключать динамически, в зависимости от поддержки новейшего стандарта ECMAScript:
+```html
+<script>
+    function onVendorJsLoaded() {
+        if(supportedLatestJs()) {
+            loadDynamicJs('/local/build/main.latest.js');
+        } else {
+            loadDynamicJs('/local/build/main.es5.js');
+        }
+    }
+
+    loadDynamicJs('/local/build/vendor.js', onVendorJsLoaded);
+</script>
+```
+Исходники этих функций ищите в _/local/tools/js-includer.js_.
+
 ## Режим разработки
 
 По-умолчанию файлы билда будут минифицированы и их отладка будет весьма затруднительной. Данный подход применим для продакшна. Для девелопмент-версий проектов вам следует определить переменную среды _DEV_SERVER_ со значением 1.

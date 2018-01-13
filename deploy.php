@@ -1,14 +1,15 @@
 <pre>
 	<?php
+
 		$branch = 'master';
 
 		$commands = [
-			'git add --all',
-			'git commit -m "Changes on production"',
-			"git pull origin {$branch}",
-			'git checkout --theirs .',
-			'git commit -am "Remote Conflict"',
-			"git push origin {$branch}",
+//			'git add --all',
+//			'git commit -m "Changes on production"',
+//			"git pull origin {$branch}",
+//			'git checkout --theirs .',
+//			'git commit -am "Remote Conflict"',
+//			"git push origin {$branch}",
 			"yarn build"
 		];
 
