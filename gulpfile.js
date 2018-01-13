@@ -25,26 +25,47 @@ const path = {
 
 const sources = {
 	vendor: {
-		js: [
-			// todo: make nicer include of that polyfill
-			'node_modules/babel-polyfill/dist/polyfill.min.js',
-			path.source + 'vendor/js/**/*.js'
+		js: {
+			read: [
+				// todo: make nicer include of that polyfill
+				'node_modules/babel-polyfill/dist/polyfill.min.js',
+				path.source + 'vendor/js/**/*.js'
+			],
+
+			watch: [
+				path.source + 'vendor/js/**/*.js'
+			]
+		},
+		css: {
+			read: [
+				path.source + 'vendor/css/**/*.css'
+			],
+			watch: [
+				path.source + 'vendor/css/**/*.css'
+			],
+		}
+	},
+
+	js: {
+		read: [
+			path.source + 'js/**/*.js'
 		],
-		css: [
-			path.source + 'vendor/css/**/*.css'
+		watch: [
+			path.source + 'js/**/*.js'
 		],
 	},
 
-	js: [
-		path.source + 'js/**/*.js'
-	],
-
-	scss: [
-		path.source + 'scss/[^_]*.scss'
-	],
+	scss: {
+		read: [
+			path.source + 'scss/**/[^_]*.scss'
+		],
+		watch: [
+			path.source + 'scss/**/*.scss'
+		],
+	},
 };
 
-/* ---------------- FUNCTIONS -------------------- */
+/* ---------------- STREAM FUNCTIONS -------------------- */
 
 function onStreamError(error) {
 	console.error(error);
@@ -99,7 +120,7 @@ let finishCssStream = (stream) => {
 
 gulp.task('js-main', () => {
 
-	let stream = gulp.src(sources.js);
+	let stream = gulp.src(sources.js.read);
 
 	stream = prepareJsStream(stream)
 		.pipe(concat('main.latest.js'))
@@ -112,7 +133,7 @@ gulp.task('js-main', () => {
 
 gulp.task('js-fallback', () => {
 
-	let stream = gulp.src(sources.js);
+	let stream = gulp.src(sources.js.read);
 
 	stream = prepareJsStream(stream)
 		.pipe(concat('main.es5.js'))
@@ -126,7 +147,7 @@ gulp.task('js-fallback', () => {
 
 gulp.task('js-vendor', () => {
 
-	let stream = gulp.src(sources.vendor.js);
+	let stream = gulp.src(sources.vendor.js.read);
 
 	stream = prepareJsStream(stream)
 		.pipe(concat('vendor.js'))
@@ -139,7 +160,7 @@ gulp.task('js-vendor', () => {
 
 gulp.task('css-main', () => {
 
-	let stream = gulp.src(sources.scss);
+	let stream = gulp.src(sources.scss.read);
 	
 	stream = prepareCssStream(stream)
 		.pipe(concat('main.css'))
@@ -155,7 +176,7 @@ gulp.task('css-main', () => {
 
 gulp.task('css-vendor', () => {
 
-	let stream = gulp.src(sources.vendor.css);
+	let stream = gulp.src(sources.vendor.css.read);
 
 	stream = prepareCssStream(stream)
 		.pipe(concat('vendor.css'));
@@ -187,10 +208,10 @@ gulp.task('serve', () => {
 /* ---------------- WATCHER -------------------- */
 
 gulp.task('watch', () => {
-	gulp.watch(sources.js, ['js-main', 'js-fallback']);
-	gulp.watch(sources.scss, ['css-main']);
-	gulp.watch(sources.vendor.js, ['js-vendor']);
-	gulp.watch(sources.vendor.css, ['css-vendor']);
+	gulp.watch(sources.js.watch, ['js-main', 'js-fallback']);
+	gulp.watch(sources.scss.watch, ['css-main']);
+	gulp.watch(sources.vendor.js.watch, ['js-vendor']);
+	gulp.watch(sources.vendor.css.watch, ['css-vendor']);
 });
 
 /* ---------------- BUILD -------------------- */
