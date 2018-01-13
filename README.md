@@ -16,7 +16,7 @@
 
 **Основные стили:** _/local/source/scss/**/*.scss_
 
-Любые SCSS-файлы в указанной папке, кроме файлов импорта (__*.scss_).
+Любые SCSS-файлы в указанной папке, кроме файлов импорта.
 
 Компилируется в обычный CSS. 
 
@@ -83,7 +83,7 @@ $assetManager->addCss('/local/build/vendor.css');
 $assetManager->addCss('/local/build/main.css', true);
 ```
 
-Основой JS советую подключать динамически, в зависимости от поддержки новейшего стандарта ECMAScript:
+Основной JS советую подключать динамически, в зависимости от поддержки новейшего стандарта ECMAScript:
 ```html
 <script>
     function onVendorJsLoaded() {
