@@ -65,27 +65,27 @@ $ yarn global add gulp
 $ yarn install
 ```
 
-Собрать запустить сборку можно так:
+Запустить сборку можно так:
 ```bash
 $ yarn build
 ```
 
-Также предусмотрен watch-режим, с перезапуском Gulp при изменениях gulpfile.js:
-
+Также предусмотрен watch-режим - сборка отдельных билдов при изменениях исходников + перезапуск Gulp при изменении gulpfile.js:
 ```bash
 $ yarn serve
 ```
 
 ## Подключение JS/CSS на странице
 
-Если сборка работает успешно, то на бэкэнде нам достаточно подключить 2 файла:
+Сейчас поговорим о подключении JS/CSS. Собранные стили (vendor.css и main.css) я подключаю на уровне PHP:
+
 ```php
 $assetManager = \Bitrix\Main\Page\Asset::getInstance();
 $assetManager->addCss('/local/build/vendor.css');
 $assetManager->addCss('/local/build/main.css', true);
 ```
 
-Основной JS советую подключать динамически, в зависимости от поддержки новейшего стандарта ECMAScript:
+А основной JS советую подключать динамически, в зависимости от поддержки ES6. Например так:
 ```html
 <script>
     function onVendorJsLoaded() {
@@ -99,6 +99,8 @@ $assetManager->addCss('/local/build/main.css', true);
     loadDynamicJs('/local/build/vendor.js', onVendorJsLoaded);
 </script>
 ```
+
+То есть в последнем Chrome подключиться _main.latest.js_, а в IE11 подключится _main.es5.js_
 Исходники этих функций ищите в _/local/tools/js-includer.js_.
 
 ## Режим разработки
@@ -114,4 +116,4 @@ $ export DEV_SERVER=1
 
 
 ## Итог
-Вот и всё! На тестовых серваках используем _yarn serve,_ а в продакшене запускаем _yarn build_ при деплое (см. _deploy.php_).
+Вот и всё! На дев-серверах используем _yarn serve,_ а в продакшене запускаем _yarn build_ при деплое (см. _deploy.php_).
