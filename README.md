@@ -70,14 +70,14 @@ $ yarn install
 $ yarn build
 ```
 
-Также предусмотрен watch-режим - сборка отдельных билдов при изменениях исходников + перезапуск Gulp при изменении gulpfile.js:
+Также предусмотрен watch-режим - сборка отдельных билдов при изменениях исходников + перезапуск Gulp при изменении _gulpfile.js_:
 ```bash
 $ yarn serve
 ```
 
 ## Подключение JS/CSS на странице
 
-Сейчас поговорим о подключении JS/CSS. Собранные стили (vendor.css и main.css) я подключаю на уровне PHP:
+Сейчас поговорим о подключении JS/CSS. Собранные стили (_vendor.css_ и _main.css_) я подключаю на уровне PHP:
 
 ```php
 $assetManager = \Bitrix\Main\Page\Asset::getInstance();
@@ -100,7 +100,7 @@ $assetManager->addCss('/local/build/main.css', true);
 </script>
 ```
 
-То есть в последнем Chrome подключиться _main.latest.js_, а в IE11 подключится _main.es5.js_
+То есть в последнем Chrome подключится _main.latest.js_, а в IE11 - _main.es5.js_
 Исходники этих функций ищите в _/local/tools/js-includer.js_.
 
 ## Режим разработки
