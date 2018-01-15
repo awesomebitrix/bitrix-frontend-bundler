@@ -1,46 +1,53 @@
-function supportedLatestJs() {
-	try {
-		let esLatestTest = new Function('(a = 0) => { async function test() { return 2 * 2 } return test; }');
+var JsLoaderModule = (function() {
+	var supportedLatestES = function() {
+		try {
+			let esLatestTest = new Function('(a = 0) => { async function test() { return 2 * 2 } return test; }');
 
-		// if it fails -> return false
+			// if it fails -> return false
 
-		return true;
-	}
-	catch (error) {
-		return false;
-	}
-}
-
-function loadDynamicJs(urlParam, onLoadCallbackParam) {
-
-	var onLoadCallback = function() {
-		// console.log('loaded: ' + urlParam);
+			return true;
+		}
+		catch (error) {
+			return false;
+		}
 	};
 
-	if(onLoadCallbackParam) {
-		onLoadCallback = onLoadCallbackParam;
-	}
+	var include = function(urlParam, afterLoadCallback) {
 
-	if(!urlParam) {
-		return false;
-	}
+		var afterLoad = function() {
+			// console.log('loaded: ' + urlParam);
+		};
 
-	var script = document.createElement('script');
-	script.type = 'text/javascript';
-
-	if (script.readyState) {  // IE
-		script.onreadystatechange = function() {
-			if (script.readyState == 'loaded' || script.readyState == 'complete') {
-				script.onreadystatechange = null;
-				onLoadCallback();
-			}
+		if(afterLoadCallback) {
+			afterLoad = afterLoadCallback;
 		}
-	} else {  // non-IE
-		script.onload = onLoadCallback;
+
+		if(!urlParam) {
+			return false;
+		}
+
+		var script = document.createElement('script');
+		script.type = 'text/javascript';
+
+		if (script.readyState) {  // IE
+			script.onreadystatechange = function() {
+				if (script.readyState == 'loaded' || script.readyState == 'complete') {
+					script.onreadystatechange = null;
+					afterLoad();
+				}
+			}
+		} else {  // non-IE
+			script.onload = afterLoad;
+		}
+
+		script.src = urlParam;
+		document.getElementsByTagName('head')[0].appendChild(script);
+
+		return true;
+	};
+
+	return {
+		supportedLatestES: supportedLatestES,
+		loadFile: include
 	}
-
-	script.src = urlParam;
-	document.getElementsByTagName('head')[0].appendChild(script);
-
-	return true;
-}
+})();
