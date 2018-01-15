@@ -13,8 +13,7 @@
   "dependencies": {
     "babel-core": "=6.26.x",
     "babel-polyfill": "=6.26.x",
-    "babel-preset-env": "=1.6.x",
-    "babel-preset-es2017": "=6.24.x",
+    "babel-preset-env": "=1.x.x",
     "child_process": "=1.0.x",
     "gulp": "=3.9.x",
     "gulp-babel": "=7.0.x",
