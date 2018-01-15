@@ -104,7 +104,7 @@ $assetManager->addJs('/local/source/tools/js-includer.js');
         }
     }
 
-    JsLoaderModule.loadFile('/local/build/vendor.js', onVendorJsLoaded);
+    JsLoaderModule.addJs('/local/build/vendor.js', onVendorJsLoaded);
 </script>
 ```
 Исходники модуля ищите в _/local/tools/JsLoaderModule.js_.
