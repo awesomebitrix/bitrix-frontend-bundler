@@ -1,7 +1,9 @@
 function supportedLatestJs() {
 	try {
 		let esLatestTest = new Function('(a = 0) => { async function test() { return 2 * 2 } return test; }');
-		// if it fails, then return false
+
+		// if it fails -> return false
+
 		return true;
 	}
 	catch (error) {
