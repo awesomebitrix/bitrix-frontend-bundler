@@ -85,8 +85,10 @@ $ yarn serve
 
 ```php
 $assetManager = \Bitrix\Main\Page\Asset::getInstance();
+
 $assetManager->addCss('/local/build/vendor.css');
-$assetManager->addCss('/local/build/main.css', true);
+$assetManager->addCss('/local/build/main.css');
+$assetManager->addJs('/local/source/tools/js-includer.js');
 ```
 
 А основной JS советую подключать динамически, в зависимости от поддержки ES2017. Например так:
