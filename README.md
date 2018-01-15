@@ -105,10 +105,9 @@ $assetManager->addCss('/local/build/main.css', true);
     loadDynamicJs('/local/build/vendor.js', onVendorJsLoaded);
 </script>
 ```
+Исходники этих функций ищите в _/local/tools/js-includer.js_.
 
 То есть в последнем Chrome подключится _main.latest.js_, а в IE11 - _main.es5.js_. 
-
-Исходники этих функций ищите в _/local/tools/js-includer.js_.
 
 ## Режим разработки
 
