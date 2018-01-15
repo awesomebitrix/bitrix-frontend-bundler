@@ -12,7 +12,7 @@ var JsLoaderModule = (function() {
 		}
 	};
 
-	var include = function(urlParam, afterLoadCallback) {
+	var addJs = function(urlParam, afterLoadCallback) {
 
 		var afterLoad = function() {
 			// console.log('loaded: ' + urlParam);
@@ -48,6 +48,6 @@ var JsLoaderModule = (function() {
 
 	return {
 		supportedLatestES: supportedLatestES,
-		loadFile: include
+		addJs: addJs
 	}
 })();

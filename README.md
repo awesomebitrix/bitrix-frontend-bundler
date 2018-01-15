@@ -98,9 +98,9 @@ $assetManager->addJs('/local/source/tools/js-includer.js');
 <script>
     function onVendorJsLoaded() {
         if(JsLoaderModule.supportedLatestES()) {
-            JsLoaderModule.loadFile('/local/build/main.latest.js');
+            JsLoaderModule.addJs('/local/build/main.latest.js');
         } else {
-            JsLoaderModule.loadFile('/local/build/main.es5.js');
+            JsLoaderModule.addJs('/local/build/main.es5.js');
         }
     }
 
