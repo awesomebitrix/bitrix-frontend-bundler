@@ -92,7 +92,8 @@ $assetManager->addCss('/local/build/main.css');
 $assetManager->addJs('/local/source/tools/js-includer.js');
 ```
 
-А основной JS советую подключать динамически, в зависимости от поддержки ES2017. Например так:
+А основной JS советую подключать динамически, в зависимости от поддержки ES2017. Для этих целей я написал маленький модуль JsLoaderModule. Пример:
+
 ```html
 <script>
     function onVendorJsLoaded() {
@@ -106,7 +107,7 @@ $assetManager->addJs('/local/source/tools/js-includer.js');
     JsLoaderModule.loadFile('/local/build/vendor.js', onVendorJsLoaded);
 </script>
 ```
-Исходники этих функций ищите в _/local/tools/js-includer.js_.
+Исходники модуля ищите в _/local/tools/JsLoaderModule.js_.
 
 То есть в последнем Chrome подключится _main.latest.js_, а в IE11 - _main.es5.js_. 
 
