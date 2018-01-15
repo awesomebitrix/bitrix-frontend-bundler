@@ -24,6 +24,24 @@ const path = {
 };
 
 const sources = {
+	js: {
+		read: [
+			path.source + 'js/**/*.js'
+		],
+		watch: [
+			path.source + 'js/**/*.js'
+		],
+	},
+
+	scss: {
+		read: [
+			path.source + 'scss/**/[^_]*.scss'
+		],
+		watch: [
+			path.source + 'scss/**/*.scss'
+		],
+	},
+
 	vendor: {
 		js: {
 			read: [
@@ -44,24 +62,6 @@ const sources = {
 				path.source + 'vendor/css/**/*.css'
 			],
 		}
-	},
-
-	js: {
-		read: [
-			path.source + 'js/**/*.js'
-		],
-		watch: [
-			path.source + 'js/**/*.js'
-		],
-	},
-
-	scss: {
-		read: [
-			path.source + 'scss/**/[^_]*.scss'
-		],
-		watch: [
-			path.source + 'scss/**/*.scss'
-		],
 	},
 };
 
