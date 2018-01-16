@@ -5,9 +5,11 @@ var JsLoaderModule = (function() {
 			// sneaky-sneaky function, that uses ES2015's arrow functions and ES2017's async/await
 			let esLatestFunction = new Function('async (a = 0) => { let test = () => 2 * 2; let result = await test(); return result; }');
 
+			// this browser definitely supports ES2017!
 			return true;
 		}
 		catch (error) {
+			// this browser is little bit old... falling back to ES5...
 			return false;
 		}
 	}();
