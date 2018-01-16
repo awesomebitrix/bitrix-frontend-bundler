@@ -123,7 +123,7 @@ gulp.task('js-main', () => {
 	let stream = gulp.src(sources.js.read);
 
 	stream = prepareJsStream(stream)
-		.pipe(concat('main.latest.js'))
+		.pipe(concat('main.js'))
 		.on('error', onStreamError);
 
 	return finishJsStream(stream);

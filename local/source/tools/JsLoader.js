@@ -1,5 +1,5 @@
-var JsLoaderModule = (function() {
-	var supportedLatestES = function() {
+var JsLoader = (function() {
+	var es2017 = function() {
 		// ES2017 check
 		try {
 			// sneaky-sneaky function, that uses ES2015's arrow functions and ES2017's async/await
@@ -7,25 +7,25 @@ var JsLoaderModule = (function() {
 
 			// this browser definitely supports ES2017!
 			return true;
-		}
-		catch (error) {
+
+		} catch (error) {
 			// this browser is little bit old... falling back to ES5...
 			return false;
 		}
 	}();
 
-	function addJs(urlParam, afterLoadCallback) {
+	function load(url, callback) {
 
-		var afterLoad = function() {
+		if(!url) {
+			return false;
+		}
+
+		var onLoad = function() {
 			// console.log('loaded: ' + urlParam);
 		};
 
-		if(afterLoadCallback) {
-			afterLoad = afterLoadCallback;
-		}
-
-		if(!urlParam) {
-			return false;
+		if(callback) {
+			onLoad = callback;
 		}
 
 		var script = document.createElement('script');
@@ -35,21 +35,21 @@ var JsLoaderModule = (function() {
 			script.onreadystatechange = function() {
 				if (script.readyState == 'loaded' || script.readyState == 'complete') {
 					script.onreadystatechange = null;
-					afterLoad();
+					onLoad();
 				}
 			}
 		} else {  // non-IE
-			script.onload = afterLoad;
+			script.onload = onLoad;
 		}
 
-		script.src = urlParam;
+		script.src = url;
 		document.getElementsByTagName('head')[0].appendChild(script);
 
 		return true;
 	}
 
 	return {
-		supportedLatestES: supportedLatestES,
-		addJs: addJs
+		es2017: es2017,
+		load: load
 	}
 })();

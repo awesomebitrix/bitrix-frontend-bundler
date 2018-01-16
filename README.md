@@ -16,7 +16,7 @@
 
 Подключайте файлы динамически через JS: сначала определите поддерживается ли ES2017, потом подключайте соответствующий билд-файл (см. раздел _Подключение JS/CSS на странице_).
 
-Результат: _/local/build/main.latest.js_ и _/local/build/main.es5.js_
+Результат: _/local/build/main.js_ и _/local/build/main.es5.js_
 
 **Основные стили:** _/local/source/scss/**/*.scss_
 
@@ -89,28 +89,26 @@ $assetManager = \Bitrix\Main\Page\Asset::getInstance();
 $assetManager->addCss('/local/build/vendor.css');
 $assetManager->addCss('/local/build/main.css');
 
-$assetManager->addJs('/local/source/tools/js-includer.js');
+$assetManager->addJs('/local/source/tools/JsLoader.js');
 ```
 
-А основной JS советую подключать динамически, в зависимости от поддержки ES2017. Для этих целей я написал маленький модуль JsLoaderModule. Пример:
+А основной JS советую подключать динамически, в зависимости от поддержки ES2017. Для этих целей я написал маленький модуль. Пример:
 
 ```html
 <script type="text/javascript">
-    JsLoaderModule.addJs('/local/build/vendor.js', onVendorJsLoaded);
 
-    function onVendorJsLoaded() {
-
-        if(JsLoaderModule.supportedLatestES) {
-            JsLoaderModule.addJs('/local/build/main.latest.js');
+    function onVendorLoad() {
+        if(JsLoader.es2017) {
+            JsLoader.load('/local/build/main.js');
         } else {
-            JsLoaderModule.addJs('/local/build/main.es5.js');
+            JsLoader.load('/local/build/main.es5.js');
         }
     }
+
+    JsLoader.load('/local/build/vendor.js', onVendorLoad);
 </script>
 ```
-Исходники модуля ищите в _/local/tools/JsLoaderModule.js_.
-
-То есть в последнем Chrome подключится _main.latest.js_, а в IE11 - _main.es5.js_. 
+Реализация этого модуля также есть в репозитории.
 
 ## Режим разработки
 
