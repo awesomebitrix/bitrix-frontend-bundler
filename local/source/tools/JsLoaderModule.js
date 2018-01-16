@@ -1,18 +1,18 @@
 var JsLoaderModule = (function() {
 	var supportedLatestES = function() {
+		// ES2017 check
 		try {
-			let esLatestTest = new Function('(a = 0) => { async function test() { return 2 * 2 } return test; }');
-
-			// if it fails -> return false
+			// sneaky-sneaky function, that uses ES2015's arrow functions and ES2017's async/await
+			let esLatestFunction = new Function('async (a = 0) => { let test = () => 2 * 2; let result = await test(); return result; }');
 
 			return true;
 		}
 		catch (error) {
 			return false;
 		}
-	};
+	}();
 
-	var addJs = function(urlParam, afterLoadCallback) {
+	function addJs(urlParam, afterLoadCallback) {
 
 		var afterLoad = function() {
 			// console.log('loaded: ' + urlParam);
@@ -44,7 +44,7 @@ var JsLoaderModule = (function() {
 		document.getElementsByTagName('head')[0].appendChild(script);
 
 		return true;
-	};
+	}
 
 	return {
 		supportedLatestES: supportedLatestES,

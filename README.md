@@ -95,16 +95,17 @@ $assetManager->addJs('/local/source/tools/js-includer.js');
 А основной JS советую подключать динамически, в зависимости от поддержки ES2017. Для этих целей я написал маленький модуль JsLoaderModule. Пример:
 
 ```html
-<script>
+<script type="text/javascript">
+    JsLoaderModule.addJs('/local/build/vendor.js', onVendorJsLoaded);
+
     function onVendorJsLoaded() {
-        if(JsLoaderModule.supportedLatestES()) {
+
+        if(JsLoaderModule.supportedLatestES) {
             JsLoaderModule.addJs('/local/build/main.latest.js');
         } else {
             JsLoaderModule.addJs('/local/build/main.es5.js');
         }
     }
-
-    JsLoaderModule.addJs('/local/build/vendor.js', onVendorJsLoaded);
 </script>
 ```
 Исходники модуля ищите в _/local/tools/JsLoaderModule.js_.
